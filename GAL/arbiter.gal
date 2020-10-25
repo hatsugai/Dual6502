@@ -1,0 +1,21 @@
+CLK0  RDY   BE    MLB0  MLB1  RWB0  RWB1  RDY0  RDY1  A15   A14   GND
+CLK2  -     -     W0    W1    A16   REQ   BE0   BE1   OE    WE    VCC
+
+EQUATIONS
+
+W0 = /MLB1 * /W1 + /RDY
+W1 = /MLB0 * /W0 + /RDY
+BE0 =  CLK0 *  CLK2 * BE
+BE1 = /CLK0 * /CLK2 * BE
+/OE = CLK0 * CLK2 *  RWB0 + /CLK0 * /CLK2 *  RWB1
+/WE = CLK0 * CLK2 * /RWB0 + /CLK0 * /CLK2 * /RWB1
+
+REQ = MLB0 * /RDY1 + MLB1 * /RDY0
+
+;; 0000H - BFFFH  separated
+;; C000H - FFFFH  shared
+A16 = CLK0 + A15 * A14 * /CLK0
+
+OE.TRST = BE
+WE.TRST = BE
+A16.TRST = BE
